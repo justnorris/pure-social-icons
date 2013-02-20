@@ -1,0 +1,89 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tipsy Social Icons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-01 18:06-0500\n"
+"PO-Revision-Date: 2012-08-01 18:06-0500\n"
+"Last-Translator: Tom McFarlin <tom@tommcfarlin.com>\n"
+"Language-Team: Tom McFarlin <tom@tommcfarlin.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../plugin.php:44
+msgid "Tipsy Social Icons"
+msgstr ""
+
+#: ../plugin.php:47
+msgid "Displays icons for all of your social networks."
+msgstr ""
+
+#: ../views/admin.php:2
+msgid "Social Icons:"
+msgstr ""
+
+#: ../views/admin.php:3
+msgid ""
+"Provide the full address to your profile. If not provided, the icon will not "
+"display."
+msgstr ""
+
+#: ../views/admin.php:19
+msgid "Display "
+msgstr ""
+
+#: ../views/admin.php:21
+msgid "small"
+msgstr ""
+
+#: ../views/admin.php:22
+msgid "large"
+msgstr ""
+
+#: ../views/admin.php:24
+msgid " icons."
+msgstr ""
+
+#: ../views/admin.php:28
+msgid "Disable"
+msgstr ""
+
+#: ../views/admin.php:29
+msgid "Enable"
+msgstr ""
+
+#: ../views/admin.php:31
+msgid " hover fade effect."
+msgstr ""
+
+#: ../views/admin.php:34
+msgid "Icon tooltip is "
+msgstr ""
+
+#: ../views/admin.php:36
+msgid "above"
+msgstr ""
+
+#: ../views/admin.php:37
+msgid "below"
+msgstr ""
+
+#: ../views/admin.php:38
+msgid "off"
+msgstr ""
+
+#: ../views/admin.php:40
+msgid "."
+msgstr ""
+
+#: ../views/admin.php:46
+msgid ""
+"<strong>Heads up!</strong> <a href=\"http://wpsocialicons.com\">WP Social "
+"Icons</a> offers support, customization options, and the ability to add your "
+"own icons."
+msgstr ""
