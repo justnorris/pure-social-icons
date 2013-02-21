@@ -26,6 +26,50 @@ License:
 
 class Tipsy_Social_Icons extends WP_Widget {
 
+
+	protected $namespace = 'tipsy_social_';
+	protected $networks = array(
+				'behance',
+				'deviantart',
+				'digg',
+				'dribbble',
+				'email',
+				'evernote',
+				'facebook',
+				'flickr',
+				'forrst',
+				'foursquare',
+				'github',
+				'googleplus',
+				'instagram',
+				'lastfm',
+				'linkedin',
+				'mixcloud',
+				'picasa',
+				'pinterest',
+				'rdio',
+				'rss',
+				'skype',
+				'soundcloud',
+				'stackoverflow',
+				'stumbleupon',
+				'tumblr',
+				'twitter',
+				'vimeo',
+				'yelp',
+				'youtube',
+				'zootool',
+				'use_large_icons',
+				'use_fade_effect',
+				'tooltip_position'
+			);
+
+	protected $tipsy_options = array(
+				'use_large_icons',
+				'use_fade_effect',
+				'tooltip_position'
+			);
+
 	/*--------------------------------------------------*/
 	/* Constructor
 	/*--------------------------------------------------*/
@@ -36,7 +80,7 @@ class Tipsy_Social_Icons extends WP_Widget {
 	 * styles.
 	 */
 	function Tipsy_Social_Icons() {
-	
+
 		add_action( 'init', array( $this, 'plugin_textdomain' ) );
 			
 		parent::__construct(
@@ -55,6 +99,15 @@ class Tipsy_Social_Icons extends WP_Widget {
 		
 	} // end constructor
 
+
+	/*--------------------------------------------------*/
+	/* Get all Plugin Options
+	/*--------------------------------------------------*/
+	public function get_tipsy_options() {
+		return array_merge( $this -> networks, $this -> tipsy_options );
+	}
+
+
 	/*--------------------------------------------------*/
 	/* Core Widget API Functions
 	/*--------------------------------------------------*/
@@ -71,41 +124,26 @@ class Tipsy_Social_Icons extends WP_Widget {
 		
 		echo $before_widget;
 		
-		$behance = empty( $instance['behance'] ) ? '' : apply_filters( 'behance', $instance['behance'] );
-		$deviantart = empty( $instance['deviantart'] ) ? '' : apply_filters( 'deviantart', $instance['deviantart'] );
-		$digg = empty( $instance['digg'] ) ? '' : apply_filters( 'digg', $instance['digg'] );
-		$dribbble = empty( $instance['dribbble'] ) ? '' : apply_filters( 'dribbble', $instance['dribbble'] );
-		$email = empty( $instance['email'] ) ? '' : apply_filters( 'email', $instance['email'] );
-		$evernote = empty( $instance['evernote'] ) ? '' : apply_filters( 'evernote', $instance['evernote'] );
-		$facebook = empty( $instance['facebook'] ) ? '' : apply_filters( 'facebook', $instance['facebook'] );
-		$flickr = empty( $instance['flickr'] ) ? '' : apply_filters( 'flickr', $instance['flickr'] );
-		$forrst = empty( $instance['forrst'] ) ? '' : apply_filters( 'forrst', $instance['forrst'] );
-		$foursquare = empty( $instance['foursquare'] ) ? '' : apply_filters( 'foursquare', $instance['foursquare'] );
-		$github = empty( $instance['github'] ) ? '' : apply_filters( 'github', $instance['github'] );
-		$googleplus = empty( $instance['googleplus'] ) ? '' : apply_filters( 'googleplus', $instance['googleplus'] );
-		$instagram = empty( $instance['instagram'] ) ? '' : apply_filters( 'instagram', $instance['instagram'] );
-		$lastfm = empty( $instance['lastfm'] ) ? '' : apply_filters( 'lastfm', $instance['lastfm'] );
-		$mixcloud = empty( $instance['mixcloud'] ) ? '' : apply_filters( 'mixcloud', $instance['mixcloud'] );
-		$linkedin = empty( $instance['linkedin'] ) ? '' : apply_filters( 'linkedin', $instance['linkedin'] );
-		$picasa = empty( $instance['picasa'] ) ? '' : apply_filters( 'picasa', $instance['picasa'] );
-		$pinterest = empty( $instance['pinterest'] ) ? '' : apply_filters( 'pinterest', $instance['pinterest'] );
-		$rdio = empty( $instance['rdio'] ) ? '' : apply_filters( 'rdio', $instance['rdio'] );
-		$rss = empty( $instance['rss'] ) ? '' : apply_filters( 'rss', $instance['rss'] );
-		$skype = empty( $instance['skype'] ) ? '' : apply_filters( 'skype', $instance['skype'] );
-		$soundcloud = empty( $instance['soundcloud'] ) ? '' : apply_filters( 'soundcloud', $instance['soundcloud'] );
-		$stackoverflow = empty( $instance['stackoverflow'] ) ? '' : apply_filters( 'stackoverflow', $instance['stackoverflow'] );
-		$stumbleupon = empty( $instance['stumbleupon'] ) ? '' : apply_filters( 'stumbleupon', $instance['stumbleupon'] );
-		$tumblr = empty( $instance['tumblr'] ) ? '' : apply_filters( 'tumblr', $instance['tumblr'] );
-		$twitter = empty( $instance['twitter'] ) ? '' : apply_filters( 'twitter', $instance['twitter'] );
-		$vimeo = empty( $instance['vimeo'] ) ? '' : apply_filters( 'vimeo', $instance['vimeo'] );
-		$yelp = empty( $instance['yelp'] ) ? '' : apply_filters( 'yelp', $instance['yelp'] );
-		$youtube = empty( $instance['youtube'] ) ? '' : apply_filters( 'youtube', $instance['youtube'] );
-		$zootool = empty( $instance['zootool'] ) ? '' : apply_filters( 'zootool', $instance['zootool'] );
-	    
-		$use_large_icons = empty( $instance['use_large_icons'] ) ? '' : apply_filters('use_large_icons', $instance['use_large_icons'] );
-		$use_fade_effect = empty( $instance['use_fade_effect'] ) ? '' : apply_filters( 'use_fade_effect', $instance['use_fade_effect'] );
-		$tooltip_position = empty( $instance['tooltip_position'] ) ? '' : apply_filters( 'tooltip_position', $instance['tooltip_position'] ); 
-		
+
+		// BEWARE:
+		// Variable-Variables Here!
+		// Instead, we should just call upon the object itself or use an array. 
+		foreach ( $this -> get_tipsy_options() as $option ) {
+			$instance[$option] = $this -> _strip( $instance, $option );
+
+			// This part right here is going to become the shorthand like this some day again.
+			// For now (for backwards compatibility, apply filters TWICE :[  )
+			// $$option = empty( $instance[$option] ) ? '' : apply_filters( $this -> namespace . $option, $instance[$option] );
+			if ( empty( $instance[$option] ) ) {
+				$$option = '';
+			}
+
+			else {
+				$$option = apply_filters( $this -> namespace . $option, $instance[$option] );
+				$$option = apply_filters( $option, $$option ); // This is dirty. I feel dirty.
+			}
+		}
+
 		// Remove old instances of posterous since this has been removed
 		if( isset( $instance['posterous'] ) ) unset( $instance['posterous'] );
 		
@@ -124,42 +162,10 @@ class Tipsy_Social_Icons extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		
 		$instance = $old_instance;
-		
-		$instance['behance'] = $this->_strip( $new_instance, 'behance' );
-		$instance['deviantart'] = $this->_strip( $new_instance, 'deviantart' );
-		$instance['digg'] = $this->_strip( $new_instance, 'digg' );
-		$instance['dribbble'] = $this->_strip( $new_instance, 'dribbble' );
-		$instance['email'] = $this->_strip( $new_instance, 'email' );
-		$instance['evernote'] = $this->_strip( $new_instance, 'evernote' );
-		$instance['facebook'] = $this->_strip( $new_instance, 'facebook' );
-		$instance['flickr'] = $this->_strip( $new_instance, 'flickr' );
-		$instance['forrst'] = $this->_strip( $new_instance, 'forrst' );
-		$instance['foursquare'] = $this->_strip( $new_instance, 'foursquare' );
-		$instance['github'] = $this->_strip( $new_instance, 'github' );
-		$instance['googleplus'] = $this->_strip( $new_instance, 'googleplus' );
-		$instance['instagram'] = $this->_strip( $new_instance, 'instagram' );
-		$instance['lastfm'] = $this->_strip( $new_instance, 'lastfm' );
-		$instance['linkedin'] = $this->_strip( $new_instance, 'linkedin' );
-		$instance['mixcloud'] = $this->_strip( $new_instance, 'mixcloud' );
-		$instance['picasa'] = $this->_strip( $new_instance, 'picasa' );
-		$instance['pinterest'] = $this->_strip( $new_instance, 'pinterest' );
-		$instance['rdio'] = $this->_strip( $new_instance, 'rdio' );
-		$instance['rss'] = $this->_strip( $new_instance, 'rss' );
-		$instance['skype'] = $this->_strip( $new_instance, 'skype' );
-		$instance['soundcloud'] = $this->_strip( $new_instance, 'soundcloud' );
-		$instance['stackoverflow'] = $this->_strip( $new_instance, 'stackoverflow' );
-		$instance['stumbleupon'] = $this->_strip( $new_instance, 'stumbleupon' );
-		$instance['tumblr'] = $this->_strip( $new_instance, 'tumblr' );
-		$instance['twitter'] = $this->_strip( $new_instance, 'twitter' );
-		$instance['vimeo'] = $this->_strip( $new_instance, 'vimeo' );
-		$instance['yelp'] = $this->_strip( $new_instance, 'yelp' );
-		$instance['youtube'] = $this->_strip( $new_instance, 'youtube' );
-	    $instance['zootool'] = $this->_strip( $new_instance, 'zootool' );
-	    
-		$instance['use_large_icons'] = $this->_strip( $new_instance, 'use_large_icons' );
-		$instance['use_fade_effect'] = $this->_strip( $new_instance, 'use_fade_effect' );
-		$instance['tooltip_position'] = $this->_strip( $new_instance, 'tooltip_position' );
-		
+		foreach ( $this -> get_tipsy_options() as $option ) {
+			$instance[$option] = $this -> _strip( $new_instance, $option );
+		}
+
 		return $instance;
 		
 	} // end widget
@@ -170,83 +176,24 @@ class Tipsy_Social_Icons extends WP_Widget {
 	 * @instance	The array of keys and values for the widget.
 	 */
 	function form($instance) {
-	
+		$all_tipsy_options = $this -> get_tipsy_options();
+
 		$instance = wp_parse_args(
-			(array)$instance,
-			array(
-				'behance'			=> '',
-				'deviantart' 		=> '',
-				'digg' 				=> '',
-				'dribbble' 			=> '',
-				'email' 			=> '',
-				'evernote'			=> '',
-				'facebook' 			=> '',
-				'flickr' 			=> '',
-				'forrst' 			=> '',
-				'foursquare' 		=> '',
-				'github'	 		=> '',
-				'googleplus' 		=> '',
-				'instagram'			=> '',
-				'lastfm' 			=> '',
-				'linkedin' 			=> '',
-				'mixcloud' 			=> '',
-				'picasa'	 		=> '',
-				'pinterest' 		=> '',
-				'rdio' 				=> '',
-				'rss' 				=> '',
-				'skype' 			=> '',
-				'soundcloud'		=> '',
-				'stackoverflow'		=> '',
-				'stumbleupon'		=> '',
-				'tumblr' 			=> '',
-				'twitter' 			=> '',
-				'vimeo' 			=> '',
-				'yelp' 				=> '',
-				'youtube' 			=> '',
-				'zootool' 			=> '',
-				'use_large_icons' 	=> '',
-				'use_fade_effect' 	=> '',
-				'tooltip_position' 	=> ''
-			)
-		);
+						(array)$instance,
+						array_fill_keys( $all_tipsy_options ,'' )
+					);
 		
 		// Remove old instances of posterous since this has been removed
 		if( isset( $instance['posterous'] ) ) unset( $instance['posterous'] );
 		
-		$behance = $this->_strip( $instance, 'behance' );
-		$deviantart = $this->_strip( $instance, 'deviantart' );
-		$digg = $this->_strip( $instance, 'digg' );
-		$dribbble = $this->_strip( $instance, 'dribbble' );
-		$email = $this->_strip( $instance, 'email' );
-		$evernote = $this->_strip( $instance, 'evernote' );
-		$facebook = $this->_strip( $instance, 'facebook' );
-		$flickr = $this->_strip( $instance, 'flickr' );
-		$forrst = $this->_strip( $instance, 'forrst' );
-		$foursquare = $this->_strip( $instance, 'foursquare' );
-		$github = $this->_strip( $instance, 'github' );
-	    $googleplus = $this->_strip( $instance, 'googleplus' );
-	    $instagram = $this->_strip( $instance, 'instagram' );
-		$lastfm = $this->_strip( $instance, 'lastfm' );
-		$linkedin = $this->_strip( $instance, 'linkedin' );
-		$linkedin = $this->_strip( $instance, 'mixcloud' );
-		$picasa = $this->_strip( $instance, 'pinterest' );
-		$pinterest = $this->_strip( $instance, 'pinterest' );
-		$rdio = $this->_strip( $instance, 'rdio' );
-		$rss = $this->_strip( $instance, 'rss' );
-		$skype = $this->_strip( $instance, 'skype' );
-		$soundcloud = $this->_strip( $instance, 'soundcloud' );
-		$stackoverflow = $this->_strip( $instance, 'stackoverflow' );
-		$stumbleupon = $this->_strip( $instance, 'stumbleupon' );
-		$tumblr = $this->_strip( $instance, 'tumblr' );
-		$twitter = $this->_strip( $instance, 'twitter' );
-		$vimeo = $this->_strip( $instance, 'vimeo' );
-		$yelp = $this->_strip( $instance, 'yelp' );
-		$youtube = $this->_strip( $instance, 'youtube' );
-		$zootool = $this->_strip( $instance, 'zootool' );
-	    
-		$use_large_icons = $this->_strip( $instance, 'use_large_icons' );
-		$use_fade_effect = $this->_strip( $instance, 'use_fade_effect' );
-		$tooltip_position = $this->_strip( $instance, 'tooltip_position' );
+
+		foreach ( $all_tipsy_options as $option ) {
+			// BEWARE:
+			// Variable-Variable Here!
+			// Instead, we should just call upon the object itself or use an array. 
+			$$option = $this -> _strip ( $instance, $option );
+		}
+
 
 		include(  plugin_dir_path( __FILE__ ) . '/views/admin.php' );
 		
