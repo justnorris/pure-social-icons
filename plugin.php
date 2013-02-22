@@ -11,7 +11,7 @@ License:
     Copyright 2011 - 2013 Tom McFarlin (tom@tommcfarlin.com)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -29,51 +29,51 @@ class Tipsy_Social_Icons extends WP_Widget {
 
 	protected $namespace = 'tipsy_social_';
 	protected $networks = array(
-				'behance',
-				'deviantart',
-				'digg',
-				'dribbble',
-				'email',
-				'evernote',
-				'facebook',
-				'flickr',
-				'forrst',
-				'foursquare',
-				'github',
-				'googleplus',
-				'instagram',
-				'lastfm',
-				'linkedin',
-				'mixcloud',
-				'picasa',
-				'pinterest',
-				'rdio',
-				'rss',
-				'skype',
-				'soundcloud',
-				'stackoverflow',
-				'stumbleupon',
-				'tumblr',
-				'twitter',
-				'vimeo',
-				'yelp',
-				'youtube',
-				'zootool',
-				'use_large_icons',
-				'use_fade_effect',
-				'tooltip_position'
-			);
+		'behance',
+		'deviantart',
+		'digg',
+		'dribbble',
+		'email',
+		'evernote',
+		'facebook',
+		'flickr',
+		'forrst',
+		'foursquare',
+		'github',
+		'googleplus',
+		'instagram',
+		'lastfm',
+		'linkedin',
+		'mixcloud',
+		'picasa',
+		'pinterest',
+		'rdio',
+		'rss',
+		'skype',
+		'soundcloud',
+		'stackoverflow',
+		'stumbleupon',
+		'tumblr',
+		'twitter',
+		'vimeo',
+		'yelp',
+		'youtube',
+		'zootool',
+		'use_large_icons',
+		'use_fade_effect',
+		'tooltip_position'
+	);
 
 	protected $tipsy_options = array(
-				'use_large_icons',
-				'use_fade_effect',
-				'tooltip_position'
-			);
+		'use_large_icons',
+		'use_fade_effect',
+		'tooltip_position'
+	);
 
 	/*--------------------------------------------------*/
 	/* Constructor
 	/*--------------------------------------------------*/
-	
+
 	/**
 	 * The widget constructor. Specifies the classname and description, instantiates
 	 * the widget, loads localization files, and includes necessary scripts and
@@ -82,21 +82,21 @@ class Tipsy_Social_Icons extends WP_Widget {
 	function Tipsy_Social_Icons() {
 
 		add_action( 'init', array( $this, 'plugin_textdomain' ) );
-			
+
 		parent::__construct(
 			'tipsy-social-icons',
 			__( 'Tipsy Social Icons', 'tipsy-social-icons' ),
 			array (
-				'classname' 	=> 'tipsy-social-icons',
-				'description' 	=> __( 'Displays icons for all of your social networks.', 'tipsy-social-icons' )
+				'classname'  => 'tipsy-social-icons',
+				'description'  => __( 'Displays icons for all of your social networks.', 'tipsy-social-icons' )
 			)
 		);
-		
+
 		add_action( 'admin_print_styles', array( &$this, 'register_admin_styles' ) );
-		
+
 		add_action( 'wp_enqueue_scripts', array( &$this, 'register_widget_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'register_widget_scripts' ) );
-		
+
 	} // end constructor
 
 
@@ -111,23 +111,23 @@ class Tipsy_Social_Icons extends WP_Widget {
 	/*--------------------------------------------------*/
 	/* Core Widget API Functions
 	/*--------------------------------------------------*/
-	
+
 	/**
 	 * Outputs the content of the widget.
 	 *
-	 * @args			The array of form elements
-	 * @instance		The current instance of the widget
+	 * @args   The array of form elements
+	 * @instance  The current instance of the widget
 	 */
 	function widget( $args, $instance ) {
-		
+
 		extract( $args, EXTR_SKIP );
-		
+
 		echo $before_widget;
-		
+
 
 		// BEWARE:
 		// Variable-Variables Here!
-		// Instead, we should just call upon the object itself or use an array. 
+		// Instead, we should just call upon the object itself or use an array.
 		foreach ( $this -> get_tipsy_options() as $option ) {
 			$instance[$option] = $this -> _strip( $instance, $option );
 
@@ -145,71 +145,71 @@ class Tipsy_Social_Icons extends WP_Widget {
 		}
 
 		// Remove old instances of posterous since this has been removed
-		if( isset( $instance['posterous'] ) ) unset( $instance['posterous'] );
-		
-		include( plugin_dir_path( __FILE__ ) . '/views/widget.php' );
-		
+		if ( isset( $instance['posterous'] ) ) unset( $instance['posterous'] );
+
+		include plugin_dir_path( __FILE__ ) . '/views/widget.php';
+
 		echo $after_widget;
-		
+
 	} // end widget
-	
+
 	/**
 	 * Processes the widget's options to be saved.
 	 *
-	 * @new_instance	The previous instance of values before the update.
-	 * @old_instance	The new instance of values to be generated via the update.
+	 * @new_instance The previous instance of values before the update.
+	 * @old_instance The new instance of values to be generated via the update.
 	 */
 	function update( $new_instance, $old_instance ) {
-		
+
 		$instance = $old_instance;
 		foreach ( $this -> get_tipsy_options() as $option ) {
 			$instance[$option] = $this -> _strip( $new_instance, $option );
 		}
 
 		return $instance;
-		
+
 	} // end widget
-	
+
 	/**
 	 * Generates the administration form for the widget.
 	 *
-	 * @instance	The array of keys and values for the widget.
+	 * @instance The array of keys and values for the widget.
 	 */
-	function form($instance) {
+	function form( $instance ) {
 		$all_tipsy_options = $this -> get_tipsy_options();
 
 		$instance = wp_parse_args(
-						(array)$instance,
-						array_fill_keys( $all_tipsy_options ,'' )
-					);
-		
+			(array)$instance,
+			array_fill_keys( $all_tipsy_options , '' )
+		);
+
 		// Remove old instances of posterous since this has been removed
-		if( isset( $instance['posterous'] ) ) unset( $instance['posterous'] );
-		
+		if ( isset( $instance['posterous'] ) ) unset( $instance['posterous'] );
+
 
 		foreach ( $all_tipsy_options as $option ) {
 			// BEWARE:
 			// Variable-Variable Here!
-			// Instead, we should just call upon the object itself or use an array. 
+			// Instead, we should just call upon the object itself or use an array.
 			$$option = $this -> _strip ( $instance, $option );
 		}
 
 
-		include(  plugin_dir_path( __FILE__ ) . '/views/admin.php' );
-		
+		include plugin_dir_path( __FILE__ ) . '/views/admin.php';
+
 	} // end form
-	
+
 	/*--------------------------------------------------*/
 	/* Public Functions
 	/*--------------------------------------------------*/
-	
+
 	/**
 	 * Registers and enqueues admin-specific styles.
 	 */
 	public function register_admin_styles() {
 		wp_enqueue_style( 'tipsy-social-icons', plugins_url( 'tipsy-social-icons/css/admin.css' ) );
 	} // end register_admin_styles
-	
+
 	/**
 	 * Registers and enqueues widget-specific styles.
 	 */
@@ -223,29 +223,27 @@ class Tipsy_Social_Icons extends WP_Widget {
 	public function register_widget_scripts() {
 		wp_enqueue_script( 'tipsy-social-icons', plugins_url( 'tipsy-social-icons/js/widget.min.js' ), array( 'jquery' ) );
 	} // end register_widget_styles
-	
+
 	/**
 	 * Loads the plugin text domain for translation
 	 */
 	public function plugin_textdomain() {
 		load_plugin_textdomain( 'tipsy-social-icons', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 	} // end plugin_textdomain
-	
+
 	/*--------------------------------------------------*/
 	/* Private Functions
 	/*--------------------------------------------------*/
-	
+
 	/**
 	 * Convenience method for stripping tags and slashes from the content
 	 * of a form input.
 	 *
-	 * @obj			The instance of the argument array
-	 * @title		The title of the element from which we're stripping tags and slashes.
 	 */
 	private function _strip( $obj, $title ) {
 		return strip_tags( stripslashes( $obj[ $title ] ) );
 	} // end _strip
-	
+
 } // end class
 add_action( 'widgets_init', create_function( '', 'register_widget( "Tipsy_Social_Icons" );' ) );
 
