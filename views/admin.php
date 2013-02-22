@@ -3,7 +3,7 @@
 	<p class="description"><?php _e( 'Provide the full address to your profile. If not provided, the icon will not display.', 'tipsy-social-icons' ); ?></p>
 	<?php
 		foreach( $instance as $key => $val ) { 
-			if( 'use_large_icons' != $key && 'use_fade_effect' != $key && 'tooltip_position' != $key ) { ?>
+			if( ! in_array( $key, $this -> tipsy_options ) ) { ?>
 			<div class="icon-group">
 				<img src="<?php echo  WP_PLUGIN_URL . '/tipsy-social-icons/images/16/' . $key . '_16.png';  ?>" alt="<?php echo $key; ?>" title="<?php echo ucfirst( $key ); ?>" />
 				<input type="text" value="<?php echo esc_attr( $val ) ?>" name="<?php echo $this->get_field_name( $key ); ?>" id="<?php echo $this->get_field_id( $key ); ?>" class="icon-url" placeholder="<?php echo ucfirst( $key ); ?>" />
