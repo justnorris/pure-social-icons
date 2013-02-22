@@ -1,18 +1,28 @@
-<div class="tipsy-social-icon-container">
-	<ul class="tipsy-social-icons tooltip-position-<?php echo $tooltip_position; ?>"><?php 
-		$icon_size = ( 'large' == $use_large_icons ? '32' : '16' );
-		foreach( $instance as $key => $val ) { 
+<?php
+$networks = $this -> get_instance_networks($instance);
+$options = $this -> get_instance_options($instance);
 
-			// Skip the Tipsy Options here
-			if( ! in_array($key, $this -> tipsy_options ) ) {
-				if( $instance[$key] != '' ) { ?>
+$options['icon_size'] = ( $this -> get_tipsy_option('use_large_icons')  == 'large' ) ? '32' : '16' ;
+$tooltip_position = ( $position = $this -> get_tipsy_option( 'tooltip_position' ) ) ? " tooltip-position-".$position : null;
+?>
+<div class="tipsy-social-icon-container">
+	<ul class="tipsy-social-icons<?php echo $tooltip_position; ?> "><?php 
+		
+		foreach( $networks as $network => $network_value ) { 
+				if( $network_value != '' ) { ?>
 					<li>
-						<a href="<?php echo $key == 'email' ? 'mailto:' . $val : $val; ?>" class="<?php echo 'enable' == $use_fade_effect ? 'fade' : 'no-fade'; ?>" target="_blank">
-							<img src="<?php echo  plugins_url( '/tipsy-social-icons/images/' . $icon_size . '/' . $key . '_' . $icon_size . '.png' ); ?>" alt="<?php echo ucfirst( $key ); ?>" class="tipsy-social-icons" />
-						</a>
+						<?php 
+							$this -> render_icon(
+								array(
+									'network' => $network,
+									'network_value' => $network_value,
+									'options' => $options,
+									)
+							);
+						?>
+						
 					</li><?php
 				} // end if
-			} // end if
 		} // end foreach 
 	?></ul><!-- /.tipsy-social-icons -->
 <!--

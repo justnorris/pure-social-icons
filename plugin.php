@@ -58,10 +58,7 @@ class Tipsy_Social_Icons extends WP_Widget {
 		'vimeo',
 		'yelp',
 		'youtube',
-		'zootool',
-		'use_large_icons',
-		'use_fade_effect',
-		'tooltip_position'
+		'zootool'
 	);
 
 	protected $tipsy_options = array(
@@ -93,20 +90,57 @@ class Tipsy_Social_Icons extends WP_Widget {
 		);
 
 		add_action( 'admin_print_styles', array( &$this, 'register_admin_styles' ) );
-
 		add_action( 'wp_enqueue_scripts', array( &$this, 'register_widget_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( &$this, 'register_widget_scripts' ) );
+
+		// Allow to modify the networks available
+		$this -> networks = apply_filters( $this -> namespace . "networks", $this -> networks ) ;
+
+		// Allow to modify the options available
+		$this -> tipsy_options = apply_filters( $this -> namespace . "options", $this -> tipsy_options ) ;
 
 	} // end constructor
 
 
-	/*--------------------------------------------------*/
-	/* Get all Plugin Options
-	/*--------------------------------------------------*/
+	/**
+	 * Return Only the available Options
+	 * @return (array) $this -> tipsy_options
+	 */
 	public function get_tipsy_options() {
 		return array_merge( $this -> networks, $this -> tipsy_options );
 	}
 
+	/**
+	 * Get instance options
+	 * @param  (array) $instance
+	 * @return (array) Only the Otions
+	 */
+	public function get_instance_options( $instance ) {
+		return array_intersect_key( $instance, array_fill_keys( $this -> tipsy_options, null ) );
+	}
+
+	/**
+	 * Get instance options
+	 * @param  (array) $instance
+	 * @return (array) Only the Networks
+	 */
+	public function get_instance_networks( $instance ) {
+		return array_intersect_key( $instance, array_fill_keys( $this -> networks, null ) );
+	}
+
+	/**
+	 * Get Tipsy Option, and make sure it's there
+	 * @param  (string)				 $option Which option to get ?
+	 * @return (mixed bool|string)   $option Value or False if failed
+	 */
+	public function get_tipsy_option( $option ) {
+
+		if ( isset( $this -> tipsy_options [$option] ) ) {
+			return $this -> tipsy_options [$option];
+		}
+
+		return false;
+	}
 
 	/*--------------------------------------------------*/
 	/* Core Widget API Functions
@@ -124,23 +158,21 @@ class Tipsy_Social_Icons extends WP_Widget {
 
 		echo $before_widget;
 
-
-		// BEWARE:
-		// Variable-Variables Here!
-		// Instead, we should just call upon the object itself or use an array.
 		foreach ( $this -> get_tipsy_options() as $option ) {
 			$instance[$option] = $this -> _strip( $instance, $option );
 
-			// This part right here is going to become the shorthand like this some day again.
-			// For now (for backwards compatibility, apply filters TWICE :[  )
-			// $$option = empty( $instance[$option] ) ? '' : apply_filters( $this -> namespace . $option, $instance[$option] );
+			/* This part right here is going to become the shorthand like this some day again.
+			 * For now (for backwards compatibility, apply filters TWICE :[  )
+			 * $instance[$option] = empty( $instance[$option] ) ? '' : apply_filters( $this -> namespace . $option, $instance[$option] );
+			 */
+
 			if ( empty( $instance[$option] ) ) {
-				$$option = '';
+				$instance[$option] = '';
 			}
 
 			else {
-				$$option = apply_filters( $this -> namespace . $option, $instance[$option] );
-				$$option = apply_filters( $option, $$option ); // This is dirty. I feel dirty.
+				$instance[$option] = apply_filters( $this -> namespace . $option, $instance[$option] );
+				$instance[$option] = apply_filters( $option, $instance[$option] ); // This is dirty. I feel dirty.
 			}
 		}
 
@@ -188,16 +220,39 @@ class Tipsy_Social_Icons extends WP_Widget {
 
 
 		foreach ( $all_tipsy_options as $option ) {
-			// BEWARE:
-			// Variable-Variable Here!
-			// Instead, we should just call upon the object itself or use an array.
-			$$option = $this -> _strip ( $instance, $option );
+			$instance[$option] = $this -> _strip ( $instance, $option );
 		}
-
 
 		include plugin_dir_path( __FILE__ ) . '/views/admin.php';
 
 	} // end form
+
+
+	/**
+	 * Renders an icon
+	 * @uses do_action
+	 * @param  (array) $args The instance arguments (network name, value, etc.)
+	 * @return none    Don't return anything. This prints data out.
+	 */
+	public function render_icon( $args ) {
+		// If there is an action hook, display that instead
+		if ( has_action ( $this -> namespace . "render_icon" ) ):
+			do_action ( $this -> namespace . "render_icon", $args );
+		
+		// Otherwise just display the default way
+		else:
+			extract( $args, EXTR_SKIP );
+?>
+
+		<a href="<?php echo $network == 'email' ? 'mailto:' . $network_value : $network_value; ?>" class="<?php echo 'enable' == $use_fade_effect ? 'fade' : 'no-fade'; ?>" target="_blank">
+			<img src="<?php echo  plugins_url( '/tipsy-social-icons/images/' . $icon_size . '/' . $network . '_' . $icon_size . '.png' ); ?>" alt="<?php echo ucfirst( $key ); ?>" class="tipsy-social-icons" />
+		</a>
+
+		<?php
+		endif;
+	}
+
+
 
 	/*--------------------------------------------------*/
 	/* Public Functions
@@ -246,5 +301,3 @@ class Tipsy_Social_Icons extends WP_Widget {
 
 } // end class
 add_action( 'widgets_init', create_function( '', 'register_widget( "Tipsy_Social_Icons" );' ) );
-
-?>
