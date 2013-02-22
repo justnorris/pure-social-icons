@@ -2,7 +2,9 @@
 	<ul class="tipsy-social-icons tooltip-position-<?php echo $tooltip_position; ?>"><?php 
 		$icon_size = ( 'large' == $use_large_icons ? '32' : '16' );
 		foreach( $instance as $key => $val ) { 
-			if( 'use_large_icons' != $key && 'use_fade_effect' != $key && 'tooltip_position' != $key ) {
+
+			// Skip the Tipsy Options here
+			if( ! in_array($key, $this -> tipsy_options ) ) {
 				if( $instance[$key] != '' ) { ?>
 					<li>
 						<a href="<?php echo $key == 'email' ? 'mailto:' . $val : $val; ?>" class="<?php echo 'enable' == $use_fade_effect ? 'fade' : 'no-fade'; ?>" target="_blank">
