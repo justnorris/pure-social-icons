@@ -2,8 +2,8 @@
 $networks = $this -> get_instance_networks($instance);
 $options = $this -> get_instance_options($instance);
 
-$options['icon_size'] = ( $this -> get_tipsy_option('use_large_icons')  == 'large' ) ? '32' : '16' ;
-$tooltip_position = ( $position = $this -> get_tipsy_option( 'tooltip_position' ) ) ? " tooltip-position-".$position : null;
+$options['icon_size'] = ( $this -> get_tipsy_option('use_large_icons', $instance)  == 'large' ) ? '32' : '16' ;
+$tooltip_position = ( $position = $this -> get_tipsy_option( 'tooltip_position', $instance ) ) ? " tooltip-position-".$position : null;
 ?>
 <div class="tipsy-social-icon-container">
 	<ul class="tipsy-social-icons<?php echo $tooltip_position; ?> "><?php 

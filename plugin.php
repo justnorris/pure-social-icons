@@ -111,9 +111,23 @@ class Tipsy_Social_Icons extends WP_Widget {
 	}
 
 	/**
+	 * Get Tipsy Option, and make sure it's there
+	 * @param  (string)				 $option Which option to get ?
+	 * @return (mixed bool|string)   $option Value or False if failed
+	 */
+	public function get_tipsy_option( $option, $from ) {
+		
+		if ( isset( $from[$option] ) ) {
+			return $from[$option];
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get instance options
 	 * @param  (array) $instance
-	 * @return (array) Only the Otions
+	 * @return (array) Only the Options
 	 */
 	public function get_instance_options( $instance ) {
 		return array_intersect_key( $instance, array_fill_keys( $this -> tipsy_options, null ) );
@@ -128,19 +142,7 @@ class Tipsy_Social_Icons extends WP_Widget {
 		return array_intersect_key( $instance, array_fill_keys( $this -> networks, null ) );
 	}
 
-	/**
-	 * Get Tipsy Option, and make sure it's there
-	 * @param  (string)				 $option Which option to get ?
-	 * @return (mixed bool|string)   $option Value or False if failed
-	 */
-	public function get_tipsy_option( $option ) {
 
-		if ( isset( $this -> tipsy_options [$option] ) ) {
-			return $this -> tipsy_options [$option];
-		}
-
-		return false;
-	}
 
 	/*--------------------------------------------------*/
 	/* Core Widget API Functions
@@ -244,8 +246,8 @@ class Tipsy_Social_Icons extends WP_Widget {
 			extract( $args, EXTR_SKIP );
 ?>
 
-		<a href="<?php echo $network == 'email' ? 'mailto:' . $network_value : $network_value; ?>" class="<?php echo 'enable' == $use_fade_effect ? 'fade' : 'no-fade'; ?>" target="_blank">
-			<img src="<?php echo  plugins_url( '/tipsy-social-icons/images/' . $icon_size . '/' . $network . '_' . $icon_size . '.png' ); ?>" alt="<?php echo ucfirst( $key ); ?>" class="tipsy-social-icons" />
+		<a href="<?php echo $network == 'email' ? 'mailto:' . $network_value : $network_value; ?>" class="<?php echo 'enable' == $options['use_fade_effect'] ? 'fade' : 'no-fade'; ?>" target="_blank">
+			<img src="<?php echo  plugins_url( '/tipsy-social-icons/images/' . $options['icon_size'] . '/' . $network . '_' . $options['icon_size'] . '.png' ); ?>" alt="<?php echo ucfirst( $network ); ?>" class="tipsy-social-icons" />
 		</a>
 
 		<?php
