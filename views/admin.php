@@ -20,7 +20,7 @@ $options = $this -> get_instance_options($instance);
 </div><!-- /.tipsy-social-icons -->
 
 <div class="tipsy-display-options">
-	<?php if (in_array('use_large_icons', $options)): ?>
+	<?php if( isset( $option['use_large_icons'] ) ): ?>
 		<div>
 			<?php _e( 'Display ', 'tipsy-social-icons' ); ?>
 			<select id="<?php echo $this->get_field_id( 'use_large_icons' ); ?>" name="<?php echo $this->get_field_name( 'use_large_icons' ); ?>">
@@ -31,7 +31,7 @@ $options = $this -> get_instance_options($instance);
 		</div>
 	<?php endif; ?>
 
-	<?php if (in_array('use_fade_effect', $options)): ?>
+	<?php if( isset( $option['use_fade_effect'] ) ): ?>
 		<div>
 			<select id="<?php echo $this->get_field_id( 'use_fade_effect' ); ?>" name="<?php echo $this->get_field_name( 'use_fade_effect' ); ?>">
 				<option value="disable" <?php selected( 'disable', $instance['use_fade_effect'], true ); ?>><?php _e( 'Disable', 'tipsy-social-icons' ); ?></option>
@@ -41,7 +41,7 @@ $options = $this -> get_instance_options($instance);
 		</div>
 	<?php endif; ?>
 
-	<?php if (in_array('tooltip_position', $options)): ?>
+	<?php if (isset( $option['tooltip_position'] ) ): ?>
 		<div>
 			<?php _e( 'Icon tooltip is ', 'tipsy-social-icons' ); ?>
 			<select id="<?php echo $this->get_field_id( 'tooltip_position' ); ?>" name="<?php echo $this->get_field_name( 'tooltip_position' ); ?>">
