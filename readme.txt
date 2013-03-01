@@ -1,5 +1,5 @@
 === Pure Social Icons ===
-Contributors: tommcfarlin
+Contributors: justnorris, tommcfarlin
 Donate link: http://tommcfarlin.com/donate/
 Tags: social, icons, widgets
 Requires at least: 3.4
