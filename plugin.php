@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Tipsy Social Icons
-Plugin URI: http://tommcfarlin.com/tipsy-social-icons/
-Description: The easiest way to add your social networks to your blog. Visit the <a href="http://tommcfarlin.com/tipsy-social-icons">plugin's homepage</a> for more information.
+Plugin Name: Pure Social Icons
+Plugin URI: http://www.puremellow.com/social-icons
+Description: Pure Social Icons aims to be a simple social icon widget, while still giving the power of visual customization to theme developers.
 Version: 3.4
-Author: Tom McFarlin
-Author URI: http://tommcfarlin.com/
+Author: Pure Mellow
+Author URI: http://www.puremellow.com
 License:
 
     Copyright 2011 - 2013 Tom McFarlin (tom@tommcfarlin.com)
@@ -82,7 +82,7 @@ class Tipsy_Social_Icons extends WP_Widget {
 
 		parent::__construct(
 			'tipsy-social-icons',
-			__( 'Tipsy Social Icons', 'tipsy-social-icons' ),
+			__( 'Pure Social Icons', 'pure-social-icons' ),
 			array (
 				'classname'  => 'tipsy-social-icons',
 				'description'  => __( 'Displays icons for all of your social networks.', 'tipsy-social-icons' )

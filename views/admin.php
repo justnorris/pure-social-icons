@@ -56,6 +56,6 @@ $options = $this -> get_instance_options($instance);
 
 <div class="tipsy-notice">
 	<p>
-		<?php _e( '<strong>Like this plugin?</strong> Consider <a href="http://tommcfarlin.com/tipsy-social-icons" target="_blank">donating</a>. Check out my <a href="http://profiles.wordpress.org/tommcfarlin/" target="_blank">other plugins</a>, too.', 'tipsy-social-icons' ); ?>
+		<?php _e( '<strong>Like this plugin?</strong> Consider <a href="http://tommcfarlin.com/tipsy-social-icons" target="_blank">donating</a>.', 'tipsy-social-icons' ); ?>
 	</p>
 </div><!-- /.tipsy-notice -->
